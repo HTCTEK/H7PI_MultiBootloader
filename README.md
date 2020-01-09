@@ -1,7 +1,7 @@
 # H7PI_MultiBootloader
 
 ## 介绍
-stm32H7 bootloader,支持U盘更新，支持SD卡更新，支持启动到QSPI, [点击查看H7PI的硬件设计参考](https://gihub.com/PinoDM/H7PI)
+stm32H7 bootloader,支持U盘更新，支持SD卡更新，支持启动到QSPI, [点击查看H7PI的硬件设计参考](https://github.com/PinoDM/H7PI)
 
 ## Bootloader
 1. 此Bootloader需要硬件在qspi flash上运行程序，请确认自己的硬件是否支持
