@@ -1,0 +1,4 @@
+load STM32H750VBTx 
+project name STCubeGenerated 
+project toolchain "MDK-ARM V5" 
+project path "D:\H7PI_MultiBootloader\h7pi_boot\MDK-ARM\RTE\Device\STM32H750VBTx\" 

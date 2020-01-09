@@ -1,0 +1,10 @@
+--cpu Cortex-M7.fp.dp
+".\out\flashprg.o"
+".\out\flashdev.o"
+".\out\qspi.o"
+".\out\w25qxx.o"
+".\out\sys.o"
+--strict --scatter ".\Target.lin"
+--diag_suppress L6305 --summary_stderr --info summarysizes --map --load_addr_map_info --symbols
+--info sizes --info totals --info unused --info veneers
+--list ".\Out\H7PI_W25Q64.map" -o .\Out\H7PI_W25Q64.axf
