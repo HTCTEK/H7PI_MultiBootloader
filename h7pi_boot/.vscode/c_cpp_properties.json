@@ -1,0 +1,36 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${env:GNUARM}/arm-none-eabi/include",
+                "${env:GNUARM}/lib/gcc/arm-none-eabi/6.3.1/include",
+                "${workspaceRoot}/Core/Inc",
+                "${workspaceRoot}/Drivers/STM32H7xx_HAL_Driver/Inc",
+                "${workspaceRoot}/Drivers/STM32H7xx_HAL_Driver/Inc/Legacy",
+                "${workspaceRoot}/Drivers/CMSIS/Device/ST/STM32H7xx/Include",
+                "${workspaceRoot}/Drivers/CMSIS/Include",
+                "${workspaceRoot}/User",
+                "${workspaceRoot}/User/App",
+                "${workspaceRoot}/User/Drivers/",
+                "${workspaceRoot}/User/Drivers/cJSON",
+                "${workspaceRoot}/User/Drivers/USB",
+                "${workspaceRoot}/User/Drivers/LED",
+                "${workspaceRoot}/User/Drivers/FATFS",
+                "${workspaceRoot}/User/Drivers/Memory",
+                "${workspaceRoot}"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "USE_HAL_DRIVER",
+                "STM32H750xx"
+            ],
+            "intelliSenseMode": "msvc-x64",
+            "compilerPath": "C:/Program Files (x86)/GNU Tools ARM Embedded/4.8 2013q4/bin/arm-none-eabi-gcc.exe",
+            "cStandard": "c11",
+            "cppStandard": "c++14"
+        }
+    ],
+    "version": 4
+}

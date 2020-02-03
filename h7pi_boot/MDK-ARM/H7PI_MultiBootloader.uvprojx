@@ -12,7 +12,6 @@
       <ToolsetName>ARM-ADS</ToolsetName>
       <pArmCC>6100001::V6.10.1::.\ARMCLANG</pArmCC>
       <pCCUsed>6100001::V6.10.1::.\ARMCLANG</pCCUsed>
-      <uAC6>1</uAC6>
       <TargetOption>
         <TargetCommonOption>
           <Device>STM32H750VBTx</Device>
@@ -185,7 +184,6 @@
             <hadXRAM>1</hadXRAM>
             <uocXRam>0</uocXRam>
             <RvdsVP>3</RvdsVP>
-            <RvdsMve>0</RvdsMve>
             <hadIRAM2>1</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
@@ -313,7 +311,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>5</Optim>
+            <Optim>4</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -326,20 +324,16 @@
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
             <uC99>1</uC99>
-            <uGnu>0</uGnu>
             <useXO>0</useXO>
             <v6Lang>4</v6Lang>
             <v6LangP>4</v6LangP>
             <vShortEn>1</vShortEn>
             <vShortWch>1</vShortWch>
-            <v6Lto>0</v6Lto>
-            <v6WtE>0</v6WtE>
-            <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define>STM32H750xx,USE_HAL_DRIVER,STM32H750xx</Define>
               <Undefine></Undefine>
-              <IncludePath>..\User\FreeRTOS\Source\portable\RVDS\ARM_CM4F;                           ../Core/Inc;                           ../Drivers/STM32H7xx_HAL_Driver/Inc;                           ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy;                           ../Drivers/CMSIS/Device/ST/STM32H7xx/Include;                           ../Drivers/CMSIS/Include;                           ../FATFS/Target;                           ../FATFS/App;                           ../USB_DEVICE/Target;                           ../USB_DEVICE/App;                           ../Middlewares/Third_Party/FatFs/src;                           ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc;                           ..\User;                           ..\User\Drivers;                           ..\User\cJSON;                           ..\User\USB;                           ..\User\USB\STM32_USB_Device_Library\Class\MSC\Inc;                           ..\User\USB\STM32_USB_Device_Library\Class\MC\Inc;                           ../Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Inc;                           ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32H7xx_HAL_Driver/Inc;../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32H7xx/Include;../Drivers/CMSIS/Include;..\User\Apps;..\User\Drivers\cJSON;..\User\Drivers\FATFS;..\User\Drivers\LED;..\User\Drivers\Memory;..\User\Drivers\USB</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -352,7 +346,6 @@
             <NoWarn>0</NoWarn>
             <uSurpInc>0</uSurpInc>
             <useXO>0</useXO>
-            <uClangAs>0</uClangAs>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define></Define>
@@ -402,16 +395,6 @@
               <FileName>gpio.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Core/Src/gpio.c</FilePath>
-            </File>
-            <File>
-              <FileName>crc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Core/Src/crc.c</FilePath>
-            </File>
-            <File>
-              <FileName>debug.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Core/Src/debug.c</FilePath>
             </File>
             <File>
               <FileName>dma.c</FileName>
@@ -614,29 +597,144 @@
           <GroupName>User/Driver</GroupName>
           <Files>
             <File>
+              <FileName>cJSON.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Drivers\cJSON\cJSON.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_driver_sd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Drivers\FATFS\bsp_driver_sd.c</FilePath>
+            </File>
+            <File>
+              <FileName>diskio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Drivers\FATFS\diskio.c</FilePath>
+            </File>
+            <File>
+              <FileName>fatfs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Drivers\FATFS\fatfs.c</FilePath>
+            </File>
+            <File>
+              <FileName>fatfs_platform.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Drivers\FATFS\fatfs_platform.c</FilePath>
+            </File>
+            <File>
+              <FileName>ff.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Drivers\FATFS\ff.c</FilePath>
+            </File>
+            <File>
+              <FileName>ff_gen_drv.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Drivers\FATFS\ff_gen_drv.c</FilePath>
+            </File>
+            <File>
+              <FileName>sd_diskio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Drivers\FATFS\sd_diskio.c</FilePath>
+            </File>
+            <File>
+              <FileName>syscall.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Drivers\FATFS\syscall.c</FilePath>
+            </File>
+            <File>
+              <FileName>user_diskio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Drivers\FATFS\user_diskio.c</FilePath>
+            </File>
+            <File>
               <FileName>led.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\User\Drivers\led.c</FilePath>
+              <FilePath>..\User\Drivers\LED\led.c</FilePath>
             </File>
             <File>
               <FileName>qspiflash.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\User\Drivers\qspiflash.c</FilePath>
+              <FilePath>..\User\Drivers\Memory\qspiflash.c</FilePath>
+            </File>
+            <File>
+              <FileName>sdcard.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Drivers\Memory\sdcard.c</FilePath>
             </File>
             <File>
               <FileName>spiflash.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\User\Drivers\spiflash.c</FilePath>
+              <FilePath>..\User\Drivers\Memory\spiflash.c</FilePath>
             </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>User/cJSON</GroupName>
-          <Files>
             <File>
-              <FileName>cJSON.c</FileName>
+              <FileName>usb_device.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\User\cJSON\cJSON.c</FilePath>
+              <FilePath>..\User\Drivers\USB\usb_device.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_cdc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Drivers\USB\usbd_cdc.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_cdc_if.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Drivers\USB\usbd_cdc_if.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_cdc_msc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Drivers\USB\usbd_cdc_msc.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_conf.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Drivers\USB\usbd_conf.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Drivers\USB\usbd_core.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_ctlreq.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Drivers\USB\usbd_ctlreq.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_desc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Drivers\USB\usbd_desc.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_ioreq.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Drivers\USB\usbd_ioreq.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_msc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Drivers\USB\usbd_msc.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_msc_bot.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Drivers\USB\usbd_msc_bot.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_msc_data.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Drivers\USB\usbd_msc_data.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_msc_scsi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Drivers\USB\usbd_msc_scsi.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_storage_if.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Drivers\USB\usbd_storage_if.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -647,141 +745,6 @@
               <FileName>bootloader.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\Apps\bootloader.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>Middlewares/FatFs</GroupName>
-          <Files>
-            <File>
-              <FileName>diskio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Middlewares/Third_Party/FatFs/src/diskio.c</FilePath>
-            </File>
-            <File>
-              <FileName>ff.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Middlewares/Third_Party/FatFs/src/ff.c</FilePath>
-            </File>
-            <File>
-              <FileName>ff_gen_drv.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Middlewares/Third_Party/FatFs/src/ff_gen_drv.c</FilePath>
-            </File>
-            <File>
-              <FileName>syscall.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Middlewares/Third_Party/FatFs/src/option/syscall.c</FilePath>
-            </File>
-            <File>
-              <FileName>ccsbcs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Middlewares/Third_Party/FatFs/src/option/ccsbcs.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>Application/User/FATFS/Target</GroupName>
-          <Files>
-            <File>
-              <FileName>bsp_driver_sd.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\FATFS\Target\bsp_driver_sd.c</FilePath>
-            </File>
-            <File>
-              <FileName>sd_diskio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\FATFS\Target\sd_diskio.c</FilePath>
-            </File>
-            <File>
-              <FileName>fatfs_platform.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../FATFS/Target/fatfs_platform.c</FilePath>
-            </File>
-            <File>
-              <FileName>user_diskio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../FATFS/Target/user_diskio.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>Application/User/FATFS/App</GroupName>
-          <Files>
-            <File>
-              <FileName>fatfs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../FATFS/App/fatfs.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>Application/User/USB_DEVICE/App</GroupName>
-          <Files>
-            <File>
-              <FileName>usb_device.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../USB_DEVICE/App/usb_device.c</FilePath>
-            </File>
-            <File>
-              <FileName>usbd_desc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../USB_DEVICE/App/usbd_desc.c</FilePath>
-            </File>
-            <File>
-              <FileName>usbd_storage_if.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../USB_DEVICE/App/usbd_storage_if.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>Application/User/USB_DEVICE/Target</GroupName>
-          <Files>
-            <File>
-              <FileName>usbd_conf.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../USB_DEVICE/Target/usbd_conf.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>Middlewares/USB_Device_Library</GroupName>
-          <Files>
-            <File>
-              <FileName>usbd_core.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c</FilePath>
-            </File>
-            <File>
-              <FileName>usbd_ctlreq.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c</FilePath>
-            </File>
-            <File>
-              <FileName>usbd_ioreq.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c</FilePath>
-            </File>
-            <File>
-              <FileName>usbd_msc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Src/usbd_msc.c</FilePath>
-            </File>
-            <File>
-              <FileName>usbd_msc_bot.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Src/usbd_msc_bot.c</FilePath>
-            </File>
-            <File>
-              <FileName>usbd_msc_data.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Src/usbd_msc_data.c</FilePath>
-            </File>
-            <File>
-              <FileName>usbd_msc_scsi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Src/usbd_msc_scsi.c</FilePath>
             </File>
           </Files>
         </Group>

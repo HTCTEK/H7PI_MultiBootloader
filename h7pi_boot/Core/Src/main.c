@@ -20,13 +20,11 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "crc.h"
 #include "dma.h"
-#include "fatfs.h"
 #include "quadspi.h"
 #include "sdmmc.h"
 #include "spi.h"
-#include "usb_device.h"
+#include "usb_otg.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -76,6 +74,7 @@ int main(void)
   /* USER CODE BEGIN 1 */
   /* USER CODE END 1 */
   
+
   /* MPU Configuration--------------------------------------------------------*/
   MPU_Config();
 
@@ -107,11 +106,12 @@ int main(void)
   MX_QUADSPI_Init();
   MX_SPI2_Init();
   MX_SDMMC2_SD_Init();
-  MX_FATFS_Init();
-  MX_CRC_Init();
+  MX_USB_OTG_FS_PCD_Init();
   /* USER CODE BEGIN 2 */
 	StartDefaultTask(0);
   /* USER CODE END 2 */
+ 
+ 
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */

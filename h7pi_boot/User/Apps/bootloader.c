@@ -1,8 +1,7 @@
 #include "qspiflash.h"
 #include "spiflash.h"
 #include "cJSON.h"
-#include "FATFS.h"
-#include "cdc.h"
+#include "fatfs.h"
 #include "led.h"
 
 #include "usb_device.h"
@@ -16,31 +15,31 @@
 #include "string.h"
 /******************************************************************
 
-ÄÚ²¿ÉùÃ÷±äÁ¿ºÍº¯Êı
+å†…éƒ¨å£°æ˜å˜é‡å’Œå‡½æ•°
 
 ******************************************************************/
 //
-//ÖĞ¶ÏÓ³Éä
+//ä¸­æ–­æ˜ å°„
 #define VECT_TAB_OFFSET      0x00000000UL 
 //
-//Ó¦ÓÃ³ÌĞòÆô¶¯µØÖ·
+//åº”ç”¨ç¨‹åºå¯åŠ¨åœ°å€
 #define APPLICATION_ADDRESS  (uint32_t)0x90000000
 //
-//Ìø×ªÖ¸Õë
+//è·³è½¬æŒ‡é’ˆ
 typedef  void (*pFunction)(void);
 pFunction JumpToApplication;
 //
-//Â·¾¶Ë÷Òı
+//è·¯å¾„ç´¢å¼•
 #define SDCARD    0
 #define SPIFLASH  1
 //
-//ÎÄ¼şÏµÍ³¹ÒÔØ×´Ì¬
+//æ–‡ä»¶ç³»ç»ŸæŒ‚è½½çŠ¶æ€
 uint8_t sys_fatfs_mount_status = 0;
 
 
 /******************************************************************
 
-Íâ²¿ÉùÃ÷±äÁ¿ºÍº¯Êı
+å¤–éƒ¨å£°æ˜å˜é‡å’Œå‡½æ•°
 
 
 ******************************************************************/
@@ -53,14 +52,13 @@ extern char USERPath[4]; /* USER logical drive path */
 extern FATFS USERFatFS; /* File system object for USER logical drive */
 extern FIL USERFile; /* File object for USER */
 
-extern CRC_HandleTypeDef hcrc;
 
 extern void MX_FATFS_Init(void);
 extern void MX_USB_DEVICE_Init(void);
 extern USBD_HandleTypeDef hUsbDeviceFS;
 /******************************************************************
 
-Èí¼şCRC ¼ÆËã
+è½¯ä»¶CRC è®¡ç®—
 
 ******************************************************************/
  
@@ -138,7 +136,7 @@ void crc32_Final(uint32_t *crc)
 }
 
 /***********************************************************
-±éÀúÉ¾³ı·Ç¿ÕÎÄ¼ş¼Ğ
+éå†åˆ é™¤éç©ºæ–‡ä»¶å¤¹
 
 ************************************************************/
 FRESULT f_DelInterFile(char* path)
@@ -176,7 +174,7 @@ FRESULT f_DelInterFile(char* path)
     return res;
 }
 
-/* É¾³ıÎÄ¼ş¼Ğ»òÎÄ¼ş */
+/* åˆ é™¤æ–‡ä»¶å¤¹æˆ–æ–‡ä»¶ */
 FRESULT f_del(char* path)
 {
     FRESULT res;
@@ -192,19 +190,8 @@ FRESULT f_del(char* path)
 		HAL_Delay(1000);
     return res;
 }
-
 /***********************************************************
-Ó²¼şcrc¼ÆËã
-************************************************************/
-uint32_t crc_cal(uint8_t* buffer,uint32_t len)
-{
-	uint32_t crcValue = 0;
-  crcValue = HAL_CRC_Calculate(&hcrc, ((uint32_t *)buffer), len);
-  crcValue ^= 0xffffffff;
-	return crcValue;
-}
-/***********************************************************
-LEDÉÁË¸ÈÎÎñ
+LEDé—ªçƒä»»åŠ¡
 
 ************************************************************/
 uint8_t num = 0;
@@ -282,7 +269,7 @@ void StartLedTask(void const * argument)
 }
 
 /***********************************************************
-ÎÄ¼şÏµÍ³¹ÒÔØ
+æ–‡ä»¶ç³»ç»ŸæŒ‚è½½
 
 ************************************************************/
 void sys_FatfsMount(void)
@@ -292,10 +279,10 @@ void sys_FatfsMount(void)
 	uint8_t sys_sdcard_mount_status = 0;
 	uint8_t sys_spiflash_mount_status = 0;
 	//
-	//³õÊ¼»¯ÎÄ¼şÏµÍ³
-  //MX_FATFS_Init();
+	//åˆå§‹åŒ–æ–‡ä»¶ç³»ç»Ÿ
+   MX_FATFS_Init();
 	//
-	//¹ÒÔØSPI FLASHÎÄ¼şÏµÍ³
+	//æŒ‚è½½SPI FLASHæ–‡ä»¶ç³»ç»Ÿ
 	led(2,1);
 	HAL_Delay(100);
 	led(2,0);
@@ -313,7 +300,7 @@ void sys_FatfsMount(void)
 		sys_spiflash_mount_status = 1;
 	}
 	//
-	//¹ÒÔØsdcardÎÄ¼şÏµÍ³
+	//æŒ‚è½½sdcardæ–‡ä»¶ç³»ç»Ÿ
 	led(1,1);
 	HAL_Delay(100);
 	led(1,0);
@@ -325,18 +312,18 @@ void sys_FatfsMount(void)
 		{
 			res = f_mkfs(SDPath, FM_FAT32,0 , work, sizeof work);
 		}
-	}else//sd card¹ÒÔØ³É¹¦
+	}else//sd cardæŒ‚è½½æˆåŠŸ
 	{
 		sys_sdcard_mount_status = 1;
 	}
 	sys_fatfs_mount_status = sys_sdcard_mount_status | (sys_spiflash_mount_status<<1);
 }
 /***********************************************************
-´ÓÓ³ÉäµÃµØÖ·¿ªÊ¼½øĞĞ¹Ì¼şĞ£Ñé
-addr: ÄÚ´æÓ³ÉäµØÖ·£¬Ó³Éä¹Ì¼şÎ»ÖÃ
-len£ºcrc³¤¶È
-crc£ºĞ£¶ÔµÃcrcÖµ
-return£º0-Ğ£ÑéÊ§°Ü£¬1-Ğ£Ñé³É¹¦
+ä»æ˜ å°„å¾—åœ°å€å¼€å§‹è¿›è¡Œå›ºä»¶æ ¡éªŒ
+addr: å†…å­˜æ˜ å°„åœ°å€ï¼Œæ˜ å°„å›ºä»¶ä½ç½®
+lenï¼šcrcé•¿åº¦
+crcï¼šæ ¡å¯¹å¾—crcå€¼
+returnï¼š0-æ ¡éªŒå¤±è´¥ï¼Œ1-æ ¡éªŒæˆåŠŸ
 ************************************************************/
 uint8_t sys_VerifyFw(const uint8_t* addr, uint32_t len,uint32_t crc)
 {
@@ -356,8 +343,8 @@ uint8_t sys_VerifyFw(const uint8_t* addr, uint32_t len,uint32_t crc)
 
 
 /***********************************************************
-¹Ì¼ş¸üĞÂ
-src: Ñ¡Ôñ¹Ì¼şÀ´Ô´£¬0-sdcard£¬1-spiflash
+å›ºä»¶æ›´æ–°
+src: é€‰æ‹©å›ºä»¶æ¥æºï¼Œ0-sdcardï¼Œ1-spiflash
 ************************************************************/
 uint8_t sys_FwUpdate(uint8_t src)
 {
@@ -369,13 +356,13 @@ uint8_t sys_FwUpdate(uint8_t src)
 	uint32_t  address = 0;
 	uint8_t 	led_state = 0;
 	//
-	//ÎÄ¼şbuffer
+	//æ–‡ä»¶buffer
 	FIL       configfile;
 	FIL       fwfile;
 	char      filebuffer[512]={0};
 	char      crcbuffer[10240]={0};
 	//
-	//ÅäÖÃÎÄ¼şĞÅÏ¢
+	//é…ç½®æ–‡ä»¶ä¿¡æ¯
 	cJSON*    config_json = NULL;
 	cJSON*    version_json = NULL;
 	char      version[32]={0};
@@ -386,12 +373,12 @@ uint8_t sys_FwUpdate(uint8_t src)
 	char      crcVal[32] = {0}; 
 	//
 	//
-	//²éÕÒÅäÖÃspi flash ÄÚµÄÎÄ¼şºÍ¹Ì¼şĞÅÏ¢
+	//æŸ¥æ‰¾é…ç½®spi flash å†…çš„æ–‡ä»¶å’Œå›ºä»¶ä¿¡æ¯
 	led(src+1,1);
 	HAL_Delay(100);
 	led(src+1,0);
 	HAL_Delay(100);
-	if((sys_fatfs_mount_status&(src+1))==1) //¹ÒÔÚ³É¹¦£¬´ò¿ªÅäÖÃÎÄ¼şÎÄ¼ş
+	if((sys_fatfs_mount_status&(src+1))==1) //æŒ‚åœ¨æˆåŠŸï¼Œæ‰“å¼€é…ç½®æ–‡ä»¶æ–‡ä»¶
 	{
 		return 0;
 	}
@@ -403,7 +390,7 @@ uint8_t sys_FwUpdate(uint8_t src)
 			f_close(&configfile);f_del(sys_default_update_path[src]); 
 			return 0;
 		}
-		else //´ò¿ª³É¹¦£¬¶ÁÈ¡ÎÄ¼ş
+		else //æ‰“å¼€æˆåŠŸï¼Œè¯»å–æ–‡ä»¶
 		{ 
 			res = f_read(&configfile,filebuffer,sizeof filebuffer,(uint32_t*)&index);
 			if(res != FR_OK)
@@ -411,16 +398,16 @@ uint8_t sys_FwUpdate(uint8_t src)
 				f_close(&configfile);f_del(sys_default_update_path[src]); 
 				return 0;
 			}
-			else //¶ÁÈ¡³É¹¦£¬»ñÈ¡°æ±¾ºÅ£¬Â·¾¶£¬CRC32Öµ
+			else //è¯»å–æˆåŠŸï¼Œè·å–ç‰ˆæœ¬å·ï¼Œè·¯å¾„ï¼ŒCRC32å€¼
 			{
 				config_json = cJSON_Parse((const char*)filebuffer);
-				//²éÕÒ°æ±¾ºÅ
+				//æŸ¥æ‰¾ç‰ˆæœ¬å·
 				version_json = cJSON_GetObjectItem(config_json, "version");
-				//²éÕÒÂ·¾¶
+				//æŸ¥æ‰¾è·¯å¾„
 				path_json = cJSON_GetObjectItem(config_json, "path");
-				//²éÕÒCRC32Öµ
+				//æŸ¥æ‰¾CRC32å€¼
 				crc_json = cJSON_GetObjectItem(config_json, "crc32");
-				//¸´ÖÆĞÅÏ¢µ½»º´æÇø
+				//å¤åˆ¶ä¿¡æ¯åˆ°ç¼“å­˜åŒº
 				strcpy(path,path_json->valuestring);
 				strcpy(version,version_json->valuestring);
 				strcpy(crc,crc_json->valuestring);
@@ -431,7 +418,7 @@ uint8_t sys_FwUpdate(uint8_t src)
 					f_del(sys_default_update_path[src]); 
 					return 0;
 				}
-				else  //¸ù¾İÖ®Ç°»ñÈ¡µÄĞÅÏ¢´ò¿ª¹Ì¼ş
+				else  //æ ¹æ®ä¹‹å‰è·å–çš„ä¿¡æ¯æ‰“å¼€å›ºä»¶
 				{
 					cJSON_free(config_json);//cJSON_free(path_json);cJSON_free(version_json);cJSON_free(crc_json);
 					res = f_open(&fwfile,path,FA_READ);
@@ -440,7 +427,7 @@ uint8_t sys_FwUpdate(uint8_t src)
 						f_close(&fwfile);f_del(sys_default_update_path[src]); 
 						return 0;
 					}
-					else  //¶ÁÈ¡¹Ì¼ş²¢½øĞĞCRC32¼ÆËã
+					else  //è¯»å–å›ºä»¶å¹¶è¿›è¡ŒCRC32è®¡ç®—
 					{
 						index =0;
 						crc32_Init(&crcValue);
@@ -459,27 +446,27 @@ uint8_t sys_FwUpdate(uint8_t src)
 							}
 							else
 							{	
-								if(index == sizeof crcbuffer) //¶Á³öÎÄ¼şºÜ´ó£¬×°Âúbuffer£¬ËµÃ÷»¹ÓĞÎ´¶Á²¿·Ö
+								if(index == sizeof crcbuffer) //è¯»å‡ºæ–‡ä»¶å¾ˆå¤§ï¼Œè£…æ»¡bufferï¼Œè¯´æ˜è¿˜æœ‰æœªè¯»éƒ¨åˆ†
 								{
 									crc32_Update(&crcValue, (const uint8_t*)crcbuffer, index);
 									continue;
 								}	
-								else if(index < sizeof crcbuffer)//¶Á³öÎÄ¼şºÜĞ¡»òÕßµ½ÁË×îºóÒ»¶Î£¬Ã»ÓĞ×°Âúbuffer
+								else if(index < sizeof crcbuffer)//è¯»å‡ºæ–‡ä»¶å¾ˆå°æˆ–è€…åˆ°äº†æœ€åä¸€æ®µï¼Œæ²¡æœ‰è£…æ»¡buffer
 								{
-									if(index!=0) //Èç¹ûµÈÓÚ0£¬ËµÃ÷ÉÏÒ»´Î¶Á³öµÄÊı¾İ¸ÕºÃ×°Âúbuffer£¬ÕâÒ»´ÎÃ»ÓĞ¶Á³öÊı¾İ
+									if(index!=0) //å¦‚æœç­‰äº0ï¼Œè¯´æ˜ä¸Šä¸€æ¬¡è¯»å‡ºçš„æ•°æ®åˆšå¥½è£…æ»¡bufferï¼Œè¿™ä¸€æ¬¡æ²¡æœ‰è¯»å‡ºæ•°æ®
 									{
 										crc32_Update(&crcValue, (const uint8_t*)crcbuffer, index);
 									}
-									crc32_Final(&crcValue);//»ñµÃCRCÖµ£¬±È¶ÔĞ£Ñé
+									crc32_Final(&crcValue);//è·å¾—CRCå€¼ï¼Œæ¯”å¯¹æ ¡éªŒ
 									sprintf(crcVal,"%X",crcValue);
-									if(strstr(crc,crcVal)==NULL) //±È¶ÔÊ§°Ü
+									if(strstr(crc,crcVal)==NULL) //æ¯”å¯¹å¤±è´¥
 									{
 										f_close(&fwfile);f_del(sys_default_update_path[src]); 
 										return 0;
 									}
-									else //±È¶ÔĞ£Ñé³É¹¦£¬¶ÁÈ¡ÎÄ¼şĞ´Èëqspi flash
+									else //æ¯”å¯¹æ ¡éªŒæˆåŠŸï¼Œè¯»å–æ–‡ä»¶å†™å…¥qspi flash
 									{
-										f_rewind(&fwfile); //ÉèÖÃ¶ÁÈ¡¶ËµãÎª0£¬ÖØĞÂ¶ÁÈ¡²¢Ğ´Èëqspi flash
+										f_rewind(&fwfile); //è®¾ç½®è¯»å–ç«¯ç‚¹ä¸º0ï¼Œé‡æ–°è¯»å–å¹¶å†™å…¥qspi flash
 										index = 0;
 										memset(crcbuffer,0,sizeof crcbuffer);
 										while(1)
@@ -506,16 +493,16 @@ uint8_t sys_FwUpdate(uint8_t src)
 										}
 										f_close(&fwfile);
 										//
-										//ÉÕÂ¼Íê³ÉÖ®ºó£¬ĞèÒªÓ³ÉäÄÚ´æµØÖ·£¬È»ºóÖ±½ÓĞ£ÑéÒÔÏÂCRC
+										//çƒ§å½•å®Œæˆä¹‹åï¼Œéœ€è¦æ˜ å°„å†…å­˜åœ°å€ï¼Œç„¶åç›´æ¥æ ¡éªŒä»¥ä¸‹CRC
 										W25QXX_Memory_Mapped_Enable();
 										if(sys_VerifyFw((const uint8_t*)0x90000000,fwfile.obj.objsize,crcValue)==1)
 										{
-											res = f_del(sys_default_update_path[src]);  //É¾³ıÒÑ¸üĞÂÎÄ¼ş
+											res = f_del(sys_default_update_path[src]);  //åˆ é™¤å·²æ›´æ–°æ–‡ä»¶
 											return 1;
 										}
 										else
 										{
-											return 0xff;          //Ğ£ÑéÊ§°Ü£¬²»É¾³ı¸üĞÂÎÄ¼ş£¬ÖØÆôÔÙ´Î¸üĞÂ
+											return 0xff;          //æ ¡éªŒå¤±è´¥ï¼Œä¸åˆ é™¤æ›´æ–°æ–‡ä»¶ï¼Œé‡å¯å†æ¬¡æ›´æ–°
 										}
 									}
 								}
@@ -528,7 +515,7 @@ uint8_t sys_FwUpdate(uint8_t src)
 	}
 }
 /***********************************************************
-ÖØ¶¨ÒåÍâÉèÄæ³õÊ¼»¯
+é‡å®šä¹‰å¤–è®¾é€†åˆå§‹åŒ–
 
 ************************************************************/
 void HAL_MspDeInit(void)
@@ -537,20 +524,24 @@ void HAL_MspDeInit(void)
 	HAL_GPIO_DeInit(SDMMC_CDN_GPIO_Port,SDMMC_CDN_Pin);
 }
 /***********************************************************
-ÏµÍ³Ö÷ÒªÏß³Ì
-argument£º´«Èë²ÎÊı
-return£º  void
+ç³»ç»Ÿä¸»è¦çº¿ç¨‹
+argumentï¼šä¼ å…¥å‚æ•°
+returnï¼š  void
 ************************************************************/
 void StartDefaultTask(void const * argument)
 {
 	static __IO uint8_t update_status = 0;
+
 	//
-	//Ã¶¾ÙUÅÌ¸üĞÂ³ÌĞò
+	//æšä¸¾Uç›˜æ›´æ–°ç¨‹åº
 	if(HAL_GPIO_ReadPin(GPIOD,GPIO_PIN_10) == 1)   
 	{
 			MX_USB_DEVICE_Init();
+			HAL_Delay(100);
+			CDC_Printf("boot in H7PI_MultiBootloader......");
 			while(1)
 			{
+				
 				led(1,1);led(2,1);
 				HAL_Delay(100);
 				led(1,0);led(2,0);
@@ -558,17 +549,18 @@ void StartDefaultTask(void const * argument)
 				led(1,1);led(2,1);
 				HAL_Delay(100);
 				led(1,0);led(2,0);
+				CDC_Printf("\r\ncopy you update folder into mass storage......\r\nand reset the device......\r\n");
 				HAL_Delay(1000);
 			}
 	}
-	//
-	//¹ÒÔØÎÄ¼şÏµÍ³
+	
+	//æŒ‚è½½æ–‡ä»¶ç³»ç»Ÿ
 	sys_FatfsMount();
 	//
-	//¼ì²éÊÇ·ñĞèÒª¸üĞÂ¹Ì¼ş
+	//æ£€æŸ¥æ˜¯å¦éœ€è¦æ›´æ–°å›ºä»¶
 	update_status = sys_FwUpdate(SPIFLASH);
-	//´ò¿ªÎÄ¼ş»òÕßĞ£ÑéÊ§°Ü£¬ÎÄ¼ş²»´æÔÚ»òÕßÎÄ¼ş´íÎó£¬Õâ¸öÊ±ºò
-	//´ÓSD¿¨ÕÒÎÄ¼ş
+	//æ‰“å¼€æ–‡ä»¶æˆ–è€…æ ¡éªŒå¤±è´¥ï¼Œæ–‡ä»¶ä¸å­˜åœ¨æˆ–è€…æ–‡ä»¶é”™è¯¯ï¼Œè¿™ä¸ªæ—¶å€™
+	//ä»SDå¡æ‰¾æ–‡ä»¶
 	if(update_status == 0)
 	{
 		update_status = sys_FwUpdate(SDCARD);
@@ -578,12 +570,12 @@ void StartDefaultTask(void const * argument)
 		W25QXX_Memory_Mapped_Enable();
 	}
 	//
-	//ÏµÍ³Ìø×ª,ÁÁÆğÁ½¸öµÆ£¬ÍòÒ»ÏµÍ³Ğ´Èë´íÎó£¬¿ÉÒÔ±íÊ¾Æô¶¯Ê§°Ü
-	//¹ÒÆğËùÓĞRTOSÈÎÎñ,±ÜÃâÌø×ªÖ®ºóÏµÍ³³õÊ¼»¯²úÉúÎÊÌâ
+	//ç³»ç»Ÿè·³è½¬,äº®èµ·ä¸¤ä¸ªç¯ï¼Œä¸‡ä¸€ç³»ç»Ÿå†™å…¥é”™è¯¯ï¼Œå¯ä»¥è¡¨ç¤ºå¯åŠ¨å¤±è´¥
+	//æŒ‚èµ·æ‰€æœ‰RTOSä»»åŠ¡,é¿å…è·³è½¬ä¹‹åç³»ç»Ÿåˆå§‹åŒ–äº§ç”Ÿé—®é¢˜
 	HAL_MspDeInit();
 	led(1,1);led(2,1);
 	SCB_DisableICache();
-  SCB_DisableDCache();__disable_irq();
+    SCB_DisableDCache();__disable_irq();
 	SCB->VTOR = QSPI_BASE | VECT_TAB_OFFSET;
 	__set_CONTROL(0);
 	__set_MSP((*(__IO uint32_t*)0x90000000));
